@@ -1,6 +1,7 @@
 package com.jpmc.midascore.component;
 
 import com.jpmc.midascore.entity.UserRecord;
+import com.jpmc.midascore.foundation.Transaction;
 import com.jpmc.midascore.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,11 @@ public class DatabaseConduit {
 
     public void save(UserRecord userRecord) {
         userRepository.save(userRecord);
+    }
+
+    public void handle(Transaction transaction) {
+        // Placeholder for future persistence logic
+        System.out.println("DatabaseConduit received: " + transaction);
     }
 
 }
