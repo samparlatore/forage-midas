@@ -5,8 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+
+import java.util.*;
 
 @SpringBootTest
 @DirtiesContext
@@ -22,6 +25,15 @@ public class TaskThreeTests {
 
     @Autowired
     private FileLoader fileLoader;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public void inspectDatabase(String table) {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList("SELECT * FROM " + table);
+        //rows.forEach(System.out::println);
+        rows.forEach(row -> logger.info("Row: {}", row));
+    }
 
     @Test
     void task_three_verifier() throws InterruptedException {
@@ -41,6 +53,8 @@ public class TaskThreeTests {
         while (true) {
             Thread.sleep(20000);
             logger.info("...");
+            inspectDatabase("USER_RECORD");
+            inspectDatabase("TRANSACTION_RECORD");
         }
     }
 }

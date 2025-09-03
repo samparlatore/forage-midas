@@ -22,12 +22,9 @@ import java.util.Optional;
 
 @Configuration
 public class KafkaConsumerConfig {
-
+    private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerConfig.class);
     @Value("${spring.kafka.bootstrap-servers:localhost:9092}")
     private String bootstrapServers;
-
-    private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerConfig.class);
-
     private boolean isValidKafkaAddress(String address) {
         return address.matches("^[a-zA-Z0-9._-]+:\\d{2,5}$");
     }
@@ -50,18 +47,6 @@ public class KafkaConsumerConfig {
         return new org.springframework.kafka.core.DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
     }
 
-//    @Bean
-//    public ConcurrentKafkaListenerContainerFactory<String, Transaction> kafkaListenerContainerFactory() {
-//        if (!bootstrapServers.matches("^[a-zA-Z0-9._-]+:\\d{2,5}$")) {
-//            LoggerFactory.getLogger(KafkaConsumerConfig.class).info("Kafka not available — skipping listener container factory setup.");
-//            return null; // or throw new BeanNotAvailableException if you want to be explicit
-//        }
-//
-//        ConcurrentKafkaListenerContainerFactory<String, Transaction> factory = new ConcurrentKafkaListenerContainerFactory<>();
-//        factory.setConsumerFactory(consumerFactory());
-//        return factory;
-//    }
-
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Transaction> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Transaction> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -69,24 +54,5 @@ public class KafkaConsumerConfig {
         return factory;
     }
 
-//    String bootstrap = "localhost:" + findLocalKafkaPort().orElse(9092)"localhost:" + findLocalKafkaPort().orElse(9092);
-//    private Optional<Integer> findLocalKafkaPort() {
-//        for (int port = 9092; port <= 70000; port++) {
-//            try (Socket socket = new Socket()) {
-//                socket.connect(new InetSocketAddress("localhost", port), 200);
-//                return Optional.of(port);
-//            } catch (IOException ignored) {}
-//        }
-//        return Optional.empty();
-//    }
-
-    private boolean isKafkaAvailable() {
-        try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress("localhost", 9092), 200);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
 
 }
