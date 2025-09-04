@@ -5,10 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest
+import java.util.List;
+import java.util.Map;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 public class TaskFourTests {
@@ -23,6 +29,22 @@ public class TaskFourTests {
     @Autowired
     private FileLoader fileLoader;
 
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @LocalServerPort
+    private int port = 8080;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public void inspectDatabase(String table) {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList("SELECT * FROM " + table);
+        //rows.forEach(System.out::println);
+        rows.forEach(row -> logger.info("Row: {}", row));
+    }
+
+
     @Test
     void task_four_verifier() throws InterruptedException {
         userPopulator.populate();
@@ -31,6 +53,9 @@ public class TaskFourTests {
             kafkaProducer.send(transactionLine);
         }
         Thread.sleep(2000);
+        inspectDatabase("USER_RECORD");
+        inspectDatabase("TRANSACTION_RECORD");
+        inspectDatabase("INCENTIVE_RECORD");
 
 
         logger.info("----------------------------------------------------------");
@@ -44,3 +69,5 @@ public class TaskFourTests {
         }
     }
 }
+
+

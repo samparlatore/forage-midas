@@ -72,4 +72,24 @@ Verification:
 - Ran TaskThreeTests to confirm correct processing
 - Used debugger to inspect post-transaction state and validate user balances
 
+# Step 4
+🎁 Step 4: Incentive API Integration
+Integrated an external Incentive API into Midas Core to enrich transaction processing with dynamic reward logic. This step demonstrates modular system design by decoupling incentive computation from core transaction validation, allowing independent development and deployment of each component.
+
+Design Philosophy
+- Separation of Concerns: Incentive logic is abstracted into a standalone service, enabling teams to iterate independently without cross-impact.
+- Contract-Driven Development: The REST API serves as a stable interface between Midas Core and the Incentive service, ensuring compatibility as long as the contract remains unchanged.
+- Client-Server Architecture: A RESTful POST request/response pattern was chosen for its simplicity, ubiquity, and alignment with stateless incentive evaluation.
+
+Implementation Highlights
+- Integrated a RestTemplate client to communicate with the Incentive API running on http://localhost:8080/incentive
+- Serialized and posted validated Transaction objects to the API endpoint
+- Received and parsed an incentive object containing a reward amount (>=0)
+- Augmented the recipient’s balance with the incentive amount (without deducting it from the sender)
+- Extended the TransactionRecord entity to persist the incentive alongside the transaction amount
+
+Verification
+- Ran TaskFourTests to validate correct incentive integration and balance updates
+- Used debugger to inspect post-processing state of user accounts
+- Verified that the “Wilbur” user received the correct incentive-adjusted balance
 

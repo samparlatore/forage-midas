@@ -10,8 +10,7 @@ public class Transaction {
     private long recipientId;
     private BigDecimal amount;
 
-    public Transaction() {
-    }
+    public Transaction() {  }
 
     public Transaction(long senderId, long recipientId, BigDecimal amount) {
         this.senderId = senderId;

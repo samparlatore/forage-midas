@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   kafka:
     producer:
@@ -28,4 +30,13 @@ spring:
       path: /h2-console
 
 general:
-  kafka-topic: test-topic
+  kafka-topic: transaction-topic
+
+incentive:
+  service:
+    host: localhost
+    port: 8080
+    path: /incentive
+
+
+

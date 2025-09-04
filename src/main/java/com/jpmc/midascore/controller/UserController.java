@@ -1,7 +1,7 @@
 package com.jpmc.midascore.controller;
 
 import com.jpmc.midascore.entity.UserRecord;
-import com.jpmc.midascore.repository.UserRepository;
+import com.jpmc.midascore.repository.UserRecordRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final UserRepository userRepository;
+    private final UserRecordRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRecordRepository userRepository) {
         this.userRepository = userRepository;
     }
 

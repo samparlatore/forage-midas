@@ -1,7 +1,7 @@
 package com.jpmc.midascore.service;
 
 import com.jpmc.midascore.entity.UserRecord;
-import com.jpmc.midascore.repository.UserRepository;
+import com.jpmc.midascore.repository.UserRecordRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    private final UserRepository userRepository;
+    private final UserRecordRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRecordRepository userRepository) {
         this.userRepository = userRepository;
     }
 
