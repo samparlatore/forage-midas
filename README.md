@@ -93,3 +93,27 @@ Verification
 - Used debugger to inspect post-processing state of user accounts
 - Verified that the “Wilbur” user received the correct incentive-adjusted balance
 
+# Step 5
+💰 Step 5: Balance Query Endpoint Integration
+Exposed a RESTful endpoint within Midas Core to allow users to query their current account balances. This feature enhances transparency and usability by surfacing financial data directly from the backend, enabling informed decision-making and reducing the risk of user error due to unseen account states.
+
+Architectural Decision:
+- Although surfacing balance data could have warranted a separate microservice, the simplicity of the feature and ease of integration justified embedding it directly into Midas Core.
+- This decision balances architectural purity with pragmatic development—future growth of balance-related features may prompt a refactor into a dedicated component.
+
+Implementation Highlights:
+- Added a new REST controller () to Midas Core
+- Exposed a  endpoint that accepts a  as a request parameter
+- Queried transaction records to compute the user’s current balance
+- Returned a serialized  object in JSON format
+- Defaulted to a balance of 0 for non-existent users
+- Configured the application to run on port  to support the new endpoint
+
+Verification:
+- Ran  to confirm correct behavior and endpoint exposure
+- Validated that balances were accurately computed and returned
+- Ensured compatibility with the Incentive API and Kafka listener running in parallel
+- Used debugger and test logs to inspect edge cases and confirm zero-balance fallback
+
+this is a repo with the JPM completed version:
+https://github.com/vagabond-systems/forage-midas-complete
